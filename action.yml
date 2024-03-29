@@ -3,4 +3,3 @@ description: This action is a test action
 runs:
   using: node16
   main: src/index.js
-
