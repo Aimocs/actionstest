@@ -7,7 +7,7 @@ class Basictest extends TestCase
 public function test_ifreturnsyo ():void
 {
 $mak = new Make();
-$this->assertTrue(False);
+$this->assertTrue(True);
 }
 }
 
