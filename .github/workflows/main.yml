@@ -16,12 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
-
+    - uses: php-actions/composer@v6
     - name: Run Tests
       run: vendor/bin/phpunit tests
