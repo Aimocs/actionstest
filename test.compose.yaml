@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: test 
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # - ./mysql/db.sql:/docker-entrypoint-initdb.d/db.sql
+    networks:
+      - lamp-docker
+  www:
+    # depends_on:
+    #   - db
+    image: php:8.1.1-apache
+    volumes:
+      - "./:/var/www/html"
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - lamp-docker
+    environment:
+      - APACHE_ENABLE_REWRITE=true
+    command: "/bin/sh -c 'docker-php-ext-install pdo pdo_mysql mysqli && a2enmod rewrite && exec apache2-foreground'"
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    networks:
+      - lamp-docker
+volumes:
+  mysql-data:
+networks:
+  lamp-docker:
+    driver: bridge
